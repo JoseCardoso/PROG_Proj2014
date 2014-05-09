@@ -28,23 +28,59 @@ Box::Box(string passwd, Date currentDate)
 vector<Program*> Box::listByDay(WeekDay day) const
 {
 	vector<Program*>res;
-	
 
 	for (unsigned int i = 0 ; i < channels.size(); i++)
 	{
-		for ( unsigned int j = 0 ; j < channels.getPrograms() ; j ++)
+		for ( unsigned int j = 0 ; j < channels[i]->getPrograms().size() ; j ++)
 		{
-			if ( channels.get
-
+			if ( channels[i]->getPrograms()[j]->getWeekDay() == day)
+			{
+				res.push_back(channels[i]->getPrograms[j]);
+			}
 
 		}
 	}
 
+	return res;
 
 }
 vector<Program*> Box::listByChannel(string  channel, string day) const{
+
+
+	vector<Program*>res;
+
+	for (unsigned int i = 0 ; i < channels.size(); i++)
+	{
+		for ( unsigned int j = 0 ; j < channels[i]->getPrograms().size() ; j ++)
+		{
+			if ( channels[i]->getPrograms()[j]->getWeekDay() == day  && channels[i]->getName() == channel )
+			{
+				res.push_back(channels[i]->getPrograms[j]);
+			}
+
+		}
+	}
+
+	return res;
 }
-vector<Program*> Box::listByType(string  type, string day) const{
+vector<Program*> Box::listByType(ProgramType type, string day) const{
+
+	vector<Program*>res;
+
+	for (unsigned int i = 0 ; i < channels.size(); i++)
+	{
+		for ( unsigned int j = 0 ; j < channels[i]->getPrograms().size() ; j ++)
+		{
+			if ( channels[i]->getPrograms()[j]->getWeekDay() == day  && channels[i]->getName() == channel channels[i]->getPrograms()[j]->getProgramType() == type )
+			{
+				res.push_back(channels[i]->getPrograms[j]);
+			}
+
+		}
+	}
+
+	return res;
+
 }
 bool Box::rentMovies(string title){
 }

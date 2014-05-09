@@ -19,6 +19,8 @@ public:
 	{
 		return (int)day * 24*60*60  + hour*60 + min < (int)d.day * 24*60*60  + d.hour*60 + d.min ;
 	}
+	WeekDay getDay();
+
 
 };
 

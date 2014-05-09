@@ -22,5 +22,7 @@ private:
 public:
 	Program(void);
 	~Program(void);
+	WeekDay getWeekDay();
+	ProgramType getProgramType();
 };
 

@@ -28,7 +28,7 @@ public:
 	Box(string passwd, Date currentDate);
 	vector<Program*> listByDay(WeekDay day) const;
 	vector<Program*> listByChannel(string  channel, string day) const;
-	vector<Program*> listByType(string  type, string day) const;
+	vector<Program*> listByType(ProgramType  type, string day) const;
 	bool rentMovies(string title);
 	float moneySpent() const;
 	int timesWhatched(string title) const;

@@ -16,3 +16,9 @@ Date::Date(WeekDay day, int hour, int min)
 Date::~Date(void)
 {
 }
+
+
+WeekDay Date::getDay()
+{
+	return day;
+}
