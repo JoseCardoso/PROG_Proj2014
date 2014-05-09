@@ -13,5 +13,9 @@ private:
 public:
 	Movie(void);
 	~Movie(void);
+	string getName();
+	void incRented();
+	long getRentedTimes();
+	double getCost();
 };
 

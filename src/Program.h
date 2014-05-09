@@ -24,5 +24,6 @@ public:
 	~Program(void);
 	WeekDay getWeekDay();
 	ProgramType getProgramType();
+	void setRecorded(bool recorded);
 };
 

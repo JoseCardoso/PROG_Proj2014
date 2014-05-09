@@ -20,3 +20,8 @@ ProgramType Program:: getProgramType()
 {
 	return type;
 }
+
+ void Program::setRecorded(bool recorded)
+{
+	recorded = this->recorded;
+}

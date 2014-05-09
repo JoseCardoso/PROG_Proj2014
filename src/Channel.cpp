@@ -14,3 +14,8 @@ vector <Program*> Channel:: getPrograms(){
 
 	return programs;
 }
+
+string Channel:: getName()
+{
+	return name;
+}

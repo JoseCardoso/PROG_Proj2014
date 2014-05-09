@@ -16,5 +16,6 @@ public:
 	Channel(void);
 	~Channel(void);
 	vector <Program*> getPrograms();
-};
+	string getName();
 
+};
