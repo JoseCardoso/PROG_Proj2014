@@ -1,7 +1,6 @@
 #pragma once
 
-#include <string>
-#include <vector>
+#include "Includer.h"
 #include "Program.h"
 
 
@@ -14,8 +13,11 @@ private:
 	vector<Program*> programs;
 public:
 	Channel(void);
+	Channel(string name);
+	void addProgram(Program* program);
+	void removeProgram(string programName);
 	~Channel(void);
-	vector <Program*> getPrograms();
-	string getName();
+	vector <Program*> getPrograms() const;
+	string getName() const;
 
 };

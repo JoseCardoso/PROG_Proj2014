@@ -18,7 +18,7 @@ Date::~Date(void)
 }
 
 
-WeekDay Date::getDay()
+WeekDay Date::getDay() const
 {
 	return day;
 }

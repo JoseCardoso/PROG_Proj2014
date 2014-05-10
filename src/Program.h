@@ -1,8 +1,6 @@
 #pragma once
 
-#include <string>
-#include <vector>
-
+#include "Includer.h"
 #include "Date.h"
 
 enum ProgramType {
@@ -21,9 +19,12 @@ private:
 	Date exhibitionDate;
 public:
 	Program(void);
+	Program(string name, ProgramType type, int duration, Date exhibitionDate);
 	~Program(void);
-	WeekDay getWeekDay();
-	ProgramType getProgramType();
+	string getName() const;
+	Date getDate() const;
+	int getDuration() const;
+	ProgramType getProgramType() const;
 	void setRecorded(bool recorded);
 };
 

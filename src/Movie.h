@@ -1,8 +1,7 @@
 #pragma once
 
-#include <string>
+#include "Includer.h"
 
-using namespace std;
 
 class Movie
 {
@@ -12,6 +11,7 @@ private:
 	long rentedTimes;
 public:
 	Movie(void);
+	Movie(string name, double cost);
 	~Movie(void);
 	string getName();
 	void incRented();

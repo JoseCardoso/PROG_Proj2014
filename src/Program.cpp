@@ -11,15 +11,26 @@ Program::~Program(void)
 }
 
 
-WeekDay Program::getWeekDay()
+Date Program::getDate() const
 {
-	return exhibitionDate.getDay();
+	return exhibitionDate;
 }
 
-ProgramType Program:: getProgramType()
+ProgramType Program:: getProgramType() const
 {
 	return type;
 }
+
+int Program:: getDuration() const
+{
+	return duration;
+}
+
+string Program:: getName() const
+{
+	return name;
+}
+
 
  void Program::setRecorded(bool recorded)
 {

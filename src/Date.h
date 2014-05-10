@@ -1,6 +1,6 @@
 #pragma once
 
-using namespace std;
+#include "Includer.h"
 
 enum WeekDay {
 	SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY 
@@ -19,7 +19,7 @@ public:
 	{
 		return (int)day * 24*60*60  + hour*60 + min < (int)d.day * 24*60*60  + d.hour*60 + d.min ;
 	}
-	WeekDay getDay();
+	WeekDay getDay() const;
 
 
 };

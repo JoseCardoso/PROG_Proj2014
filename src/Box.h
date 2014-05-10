@@ -1,7 +1,6 @@
 #pragma once
-#include <string>
-#include <vector>
 
+#include "Includer.h"
 #include "Channel.h"
 #include "Movie.h"
 #include "Program.h"
@@ -27,8 +26,8 @@ public:
 	~Box(void);
 	Box(string passwd, Date currentDate);
 	vector<Program*> listByDay(WeekDay day) const;
-	vector<Program*> listByChannel(string  channel, string day) const;
-	vector<Program*> listByType(ProgramType  type, string day) const;
+	vector<Program*> listByChannel(string  channel, WeekDay day) const;
+	vector<Program*> listByType(ProgramType  type, WeekDay day) const;
 	bool rentMovies(string title);
 	float moneySpent() const;
 	int timesWhatched(string title) const;
