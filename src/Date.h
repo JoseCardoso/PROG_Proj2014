@@ -2,9 +2,7 @@
 
 #include "Includer.h"
 
-enum WeekDay {
-	SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY 
-};
+
 
 class Date
 {
@@ -15,6 +13,7 @@ public:
 	Date(void);
 	Date(WeekDay, int hour, int min);
 	~Date(void);
+	string PrintDate();
 	bool operator<(Date d)
 	{
 		return (int)day * 24*60*60  + hour*60 + min < (int)d.day * 24*60*60  + d.hour*60 + d.min ;

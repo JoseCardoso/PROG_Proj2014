@@ -11,6 +11,12 @@ Movie::~Movie(void)
 {
 
 }
+Movie::Movie(string name, double cost)
+{
+	this->name = name;
+	this->cost = cost;
+	this->rentedTimes = 0;
+}
 
 string Movie:: getName()
 {

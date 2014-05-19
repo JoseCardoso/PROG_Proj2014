@@ -10,6 +10,12 @@ Channel::~Channel(void)
 {
 }
 
+
+Channel::Channel(string name)
+{
+	this->name= name;
+}
+
 vector <Program*> Channel:: getPrograms() const
 {
 

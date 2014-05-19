@@ -6,15 +6,33 @@
 #include <vector>
 #include <sstream>
 #include <Windows.h>
+#include <cstdlib>
+#include <stdlib.h>    
+#include <time.h>      
+#include <conio.h>
 
 using namespace std;
 
+enum WeekDay {
+	SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY 
+};
 
-string Name();
+
+enum ProgramType {
+	NEWS, SPORTS, ENTERTAINMENT, LIFE_STYLE, COOKING
+};
+
+
+string inputString();
 int Value();
 void ClearScr();
 void hideCursor();
 string convertToLowerCase (string Word);
 vector <int> parsingInput(string line);
+WeekDay convertStringToWeekDay(string day);
+string convertWeekDayToString(WeekDay day);
+ProgramType convertStringToProgramType(string type);
+string convertProgramTypeToString(ProgramType type);
+string convertIntToString(int number);
 
 

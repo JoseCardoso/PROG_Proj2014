@@ -3,10 +3,6 @@
 #include "Includer.h"
 #include "Date.h"
 
-enum ProgramType {
-	NEW, SPORTS, ENTERTAINMENT, LIFE_STYLE, COOKING
-};
-
 using namespace std;
 
 class Program
@@ -15,6 +11,7 @@ private:
 	string name;
 	ProgramType type;
 	bool recorded;
+	bool toBeRecorded;
 	int duration;
 	Date exhibitionDate;
 public:
@@ -23,6 +20,9 @@ public:
 	~Program(void);
 	string getName() const;
 	Date getDate() const;
+	bool getRecorded() const;
+	bool getToBeRecorded() const;
+	void setToBeRecorded(bool toBeRecorded);
 	int getDuration() const;
 	ProgramType getProgramType() const;
 	void setRecorded(bool recorded);

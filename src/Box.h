@@ -31,7 +31,11 @@ public:
 	bool rentMovies(string title);
 	float moneySpent() const;
 	int timesWhatched(string title) const;
+	string getPassword() const;
 	bool changePassword();          // ask, verify and change the password
+	void PrintProgramsByDay(int id,WeekDay day);
+	void PrintProgramsByChannel(int id,string channel);
+	void PrintProgramsByType(int id, ProgramType type);
 	// Channel CRUD
 	bool createdChanel();
 	bool removeChanel();

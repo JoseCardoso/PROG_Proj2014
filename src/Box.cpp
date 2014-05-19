@@ -19,7 +19,7 @@ Box::~Box(void)
 Box::Box(string passwd, Date currentDate)
 {
 	ownerPass=passwd;
-	currentDate=this->currentDate;
+	this->currentDate=currentDate;
 
 }
 
@@ -149,7 +149,7 @@ int Box::timesWhatched(string title) const{
 		if (convertToLowerCase(title) == convertToLowerCase(viewedMovies[i]->getName()))
 			return viewedMovies[i]->getRentedTimes();
 	}
-	
+
 	return 0;
 
 }
@@ -166,12 +166,12 @@ bool Box::changePassword()// ask, verify and change the password
 	{
 		do 
 		{
-			
-		cout << "\nPlease enter new password: ";
-	
-		cin.ignore();
-		getline(cin,input);
-		ownerPass = input;
+
+			cout << "\nPlease enter new password: ";
+
+			cin.ignore();
+			getline(cin,input);
+			ownerPass = input;
 
 		} while (input == previousPass);
 
@@ -186,6 +186,10 @@ bool Box::changePassword()// ask, verify and change the password
 
 }
 
+string Box::getPassword() const
+{
+	return ownerPass;
+}
 // Channel CRUD
 bool Box::createdChanel()
 {
@@ -224,3 +228,29 @@ bool Box::removeMovie()
 bool Box::updateMovie()
 {
 }
+
+
+void Box::PrintProgramsByDay(int i , WeekDay day){ 
+
+	ClearScr(); 
+	vector <Program *> programsOnThatDay = listByDay(day);
+
+	if (programsOnThatDay.empty()) 
+	{ 
+		cout << "There are no programs on " << convertWeekDayToString(day); 
+		Sleep(800); 
+	} 
+	else { 
+		cout << "                         -------- Programs --------" << endl;
+		cout << "on: " << convertWeekDayToString(day) << ": " << endl; 
+		cout << "\nName: " << programsOnThatDay[i]->getName() <<"\n Duration: "<< programsOnThatDay[i]->getDuration() <<"\nProgram Type: " << convertProgramTypeToString(programsOnThatDay[i]->getProgramType()) <<"\nDate: " << programsOnThatDay[i]->getDate().PrintDate();
+		cout << "\nRecord: ";
+		if (programsOnThatDay[i]->getRecorded())
+			cout << "YES"; else cout << "NO";
+		cout <<"\n To Be Recorded: ";
+		if (programsOnThatDay[i]->getToBeRecorded())
+			cout << "YES"; else cout << "NO";
+		cout << "\n\nUse the arrows to move across the Piece List\n\n1- Buy\n2- Quit" << endl; 
+		cout << " " << string(78, '-') << endl; 
+	} 
+} 
