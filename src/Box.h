@@ -24,7 +24,6 @@ public:
 	Box(void);
 	Box(string pass , Date date); 
 	~Box(void);
-	Box(string passwd, Date currentDate);
 	vector<Program*> listByDay(WeekDay day) const;
 	vector<Program*> listByChannel(string  channel, WeekDay day) const;
 	vector<Program*> listByType(ProgramType  type, WeekDay day) const;

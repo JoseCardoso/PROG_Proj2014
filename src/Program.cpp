@@ -56,7 +56,7 @@ bool Program:: getToBeRecorded() const{
 	return toBeRecorded;
 }
 
-void Program:: setRecorded(bool toBeRecorded)
+void Program:: setToBeRecorded(bool toBeRecorded)
 {
 	this->toBeRecorded = toBeRecorded;
 

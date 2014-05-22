@@ -27,5 +27,5 @@ string Date::PrintDate()
 {
 	string output = convertWeekDayToString(day) + " " + convertIntToString(hour) + "h" + convertIntToString(min) +"m";
 
-	return 
+	return output;
 }

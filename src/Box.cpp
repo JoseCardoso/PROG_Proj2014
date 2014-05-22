@@ -16,7 +16,7 @@ Box::~Box(void)
 
 }
 
-Box::Box(string passwd, Date currentDate)
+Box::Box(string passwd, Date Date)
 {
 	ownerPass=passwd;
 	this->currentDate=currentDate;
@@ -33,7 +33,7 @@ vector<Program*> Box::listByDay(WeekDay day) const
 		{
 			if ( channels[i]->getPrograms()[j]->getDate().getDay() == day)
 			{
-				res.push_back(channels[i]->getPrograms[j]);
+				res.push_back(channels[i]->getPrograms()[j]);
 			}
 
 		}
@@ -54,7 +54,7 @@ vector<Program*> Box::listByChannel(string  channel, WeekDay day) const{
 		{
 			if ( channels[i]->getPrograms()[j]->getDate().getDay() == day  && convertToLowerCase(channels[i]->getName()) == convertToLowerCase(channel) )
 			{
-				res.push_back(channels[i]->getPrograms[j]);
+				res.push_back(channels[i]->getPrograms()[j]);
 			}
 
 		}
@@ -73,7 +73,7 @@ vector<Program*> Box::listByType(ProgramType type, WeekDay day) const{
 		{
 			if ( channels[i]->getPrograms()[j]->getDate().getDay() == day  && channels[i]->getPrograms()[j]->getProgramType() == type )
 			{
-				res.push_back(channels[i]->getPrograms[j]);
+				res.push_back(channels[i]->getPrograms()[j]);
 			}
 
 		}
@@ -123,16 +123,18 @@ bool Box::rentMovies(string title){
 
 	for ( unsigned int i = 0 ; i < temp.size() ; i ++)
 	{
-		if (temp[i]->getRentedTimes > 0)
+		if (temp[i]->getRentedTimes() > 0)
 			viewedMovies.push_back(temp[i]);
 		else
 			movies.push_back(temp[i]);
 	}
+
+	return found;
 }
 
 float Box::moneySpent() const
 {
-	float res;
+	float res = 0;
 
 	for (unsigned int i = 0 ; i < viewedMovies.size() ; i++)
 	{
@@ -190,9 +192,12 @@ string Box::getPassword() const
 {
 	return ownerPass;
 }
+
+/*
 // Channel CRUD
 bool Box::createdChanel()
 {
+	return true;
 }
 
 bool Box::removeChanel()
@@ -229,7 +234,7 @@ bool Box::updateMovie()
 {
 }
 
-
+*/
 void Box::PrintProgramsByDay(int i , WeekDay day){ 
 
 	ClearScr(); 
