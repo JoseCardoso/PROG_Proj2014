@@ -235,7 +235,7 @@ bool Box::removeChanel(int i)
 	return true;
 }
 
-bool Box::updateChanel()
+bool Box::updateChanel(char op)
 {
 
 }
@@ -250,13 +250,13 @@ bool Box::createdProgram(int i)
 	ClearScr();
 	cout << "Enter The Name Of The Program: ";
 	name = inputString();
-	cout << "Enter The Type Of The Program: ";
+	cout << "\nEnter The Type Of The Program: ";
 	type = inputString();
-	cout << "Enter The WeekDay Of The Program: ";
+	cout << "\nEnter The WeekDay Of The Program: ";
 	day = inputString();
-	cout << "Enter The Hour Of Exhibition: ";
+	cout << "\nEnter The Hour Of Exhibition: ";
 	hour = Value();
-	cout << "Enter The Minutes Of Exhibition: ";
+	cout << "\nEnter The Minutes Of Exhibition: ";
 	minute = Value();
 	cout << "\nEnter The Duration Of The Program: ";
 	duration = Value();
@@ -288,23 +288,38 @@ bool Box::removeProgram(int i)
 
 }
 
-bool Box::updateProgram()
+bool Box::updateProgram(char op)
 {
 }
 
 // Movie CRUD
 bool Box::createdMovie()
 {
+	
+	string name = "";
+	int cost = 0, hour =0 , minute = 0;
+	string day , type; 
+	do{
+	ClearScr();
+	cout << "Enter The Name Of The Movie: ";
+	name = inputString();
+	cout << "Enter The Hour Of Exhibition: ";
+	cost = Value();
+	cout << "Enter Cost: ";
+	minute = Value();
+	} while (name == "" && cost == 0);
+
+
 }
 
-bool Box::removeMovie()
+bool Box::removeMovie(int i)
+{
+	movies.erase(movies.begin() + i);
+}
+
+bool Box::updateMovie(char op)
 {
 }
-
-bool Box::updateMovie()
-{
-}
-
 
 void Box::PrintProgramsByDay(int i , WeekDay day){ 
 
@@ -324,7 +339,7 @@ void Box::PrintProgramsByDay(int i , WeekDay day){
 	if (recordList[i]->getToBeRecorded())
 		cout << "YES"; else cout << "NO";
 	}
-	cout << "\n\nUse the arrows to move across the Piece List\n\n1- Set To Be Recorded\n\n0- Quit" << endl; 
+	cout << "\n\nUse The Arrows To Move Across The Programs List\n\n1- Set To Be Recorded\n\n0- Quit" << endl; 
 	cout << " " << string(78, '-') << endl; 
 
 } 
@@ -346,7 +361,7 @@ void Box::PrintProgramsByChannel(int i ,string channel ,WeekDay day){
 	if (recordList[i]->getToBeRecorded())
 		cout << "YES"; else cout << "NO";
 	}
-	cout << "\n\nUse the arrows to move across the Piece List\n\n1- Buy\n\n0- Quit" << endl; 
+	cout << "\n\nUse The Arrows To Move Across The Programs List\n\n1- Buy\n\n0- Quit" << endl; 
 	cout << " " << string(78, '-') << endl; 
 
 } 
@@ -368,7 +383,7 @@ void Box::PrintProgramsByType(int i , ProgramType type, WeekDay day){
 	if (recordList[i]->getToBeRecorded())
 		cout << "YES"; else cout << "NO";
 	}
-	cout << "\n\nUse the arrows to move across the Piece List\n\n1- Set To Be Recorded\n\n0- Quit" << endl; 
+	cout << "\nUse The Arrows To Move Across The Programs List\n\n1- Set To Be Recorded\n\n0- Quit" << endl; 
 	cout << " " << string(78, '-') << endl; 
 
 } 
@@ -392,7 +407,7 @@ void Box::PrintMovies(int i){
 		cout << "Unseen"; else { cout << "Times watched: " << allMovies[i]->getRentedTimes() << endl;}
 
 	if (!adminLogin)
-		cout << "\n\nUse the arrows to move across the Piece List\n\n1- Rent\n0- Quit" << endl; 
+		cout << "\n\nUse The Arrows To Move Across The Movie Listt\n\n1- Rent\n0- Quit" << endl; 
 	else
 		cout << "\n\nUse the arrows to move across the Piece List\n\n1- Rent\2-Change Movie Name\n3-Change Movie Cost\n0- Quit" << endl; 
 	cout << " " << string(78, '-') << endl; 
@@ -415,7 +430,7 @@ void Box::PrintAllPrograms(int i){
 	if (recordList[i]->getToBeRecorded())
 		cout << "YES"; else cout << "NO";
 	}
-	cout << "\n\nUse the arrows to move across the Piece List\n\n1- Change Name\n2- Change Duration\n3- Change Program Type\n4- Change Day Of The Week\n5- Change Airing Time\n6- Delete Program\n\n0- Quit" << endl; 
+	cout << "\n\nUse The Arrows To Move Across The Programs List\n\n1- Change Name\n2- Change Duration\n3- Change Program Type\n4- Change Day Of The Week\n5- Change Airing Time\n6- Delete Program\n\n0- Quit" << endl; 
 	cout << " " << string(78, '-') << endl; 
 
 }
@@ -430,7 +445,7 @@ void Box::PrintAllChannels(int i)
 	{
 		cout << j+1 << channels[i]->getPrograms()[j]->getName() << endl;
 	}
-	cout << "\n\nUse the arrows to move across the Piece List\n\n1- Change Name\n2- Add New Program\n3- Remove A Program\n\n0- Quit" << endl; 
+	cout << "\n\nUse The Arrows To Move Across The Channel List\n\n1- Change Name\n2- Add New Program\n3- Remove A Program\n\n0- Quit" << endl; 
 	cout << " " << string(78, '-') << endl; 
 
 }

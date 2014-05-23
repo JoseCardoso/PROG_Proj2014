@@ -17,7 +17,7 @@ public:
 	int turnToMinutes();
 	bool operator<(Date d)
 	{
-		return (int)day * 24*60*60  + hour*60 + min < (int)d.day * 24*60*60  + d.hour*60 + d.min ;
+		return ((int)day * 24*60*60  + hour*60 + min) < ((int)d.day * 24*60*60  + d.hour*60 + d.min) ;
 	}
 	WeekDay getDay() const;
 
