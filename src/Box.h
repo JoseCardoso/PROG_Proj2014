@@ -44,15 +44,16 @@ public:
 	// Channel CRUD
 	bool createdChanel();
 	bool removeChanel(int i);
-	bool updateChanel(char op);
+	bool updateChanel(char op, int i);
+	bool checkNewChannelName(string name);
 	// Program CRUD
 	bool createdProgram(int i); //i significa o indice do channel no vector de canais da Box
 	bool removeProgram(int i); //i significa o indice do programa no vector de programas para poder remove-lo dos respectivos canais
-	bool updateProgram(char op);
+	bool updateProgram(char op, int i);
 	// Movie CRUD
 	bool createdMovie();
 	bool removeMovie(int i);
-	bool updateMovie(char op);
+	bool updateMovie(char op, int i);
 
 };
 

@@ -69,3 +69,8 @@ bool Channel:: CheckIfValidTimeForNewProgram(Program* p)
 	}
 	
 }
+
+void Channel::setName(string name)
+{
+	this->name = name;
+}

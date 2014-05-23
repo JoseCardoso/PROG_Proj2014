@@ -212,20 +212,20 @@ string Box::getPassword() const
 // Channel CRUD
 bool Box::createdChanel()
 {
-	
+
 	string name = "";
 	do{
-	ClearScr();
-	cout << "Enter The Name Of The Channel: ";
-	name = inputString();
+		ClearScr();
+		cout << "Enter The Name Of The Channel: ";
+		name = inputString();
 
 	} while (name == "");
-	
+
 	Channel* c1 = new Channel(name);
 
 	channels.push_back(c1);
 
- 	return true;
+	return true;
 }
 
 bool Box::removeChanel(int i)
@@ -235,8 +235,23 @@ bool Box::removeChanel(int i)
 	return true;
 }
 
-bool Box::updateChanel(char op)
+bool Box::updateChanel(char op, int i) // i representa o id do canal no vector de canais
 {
+	ClearScr();
+
+	switch (op)
+	{
+	case '1': //Change Name
+		cout << "Enter Name: (must be a new unused name): ";
+		if(checkNewChannelName(inputString()))
+			channels[i]->
+			break;
+	case '2'://AddNewProgram
+		break;
+	case '3': //Remove a program
+		break;
+
+	}
 
 }
 
@@ -247,19 +262,19 @@ bool Box::createdProgram(int i)
 	int duration = 0, hour =0 , minute = 0;
 	string day , type; 
 	do{
-	ClearScr();
-	cout << "Enter The Name Of The Program: ";
-	name = inputString();
-	cout << "\nEnter The Type Of The Program: ";
-	type = inputString();
-	cout << "\nEnter The WeekDay Of The Program: ";
-	day = inputString();
-	cout << "\nEnter The Hour Of Exhibition: ";
-	hour = Value();
-	cout << "\nEnter The Minutes Of Exhibition: ";
-	minute = Value();
-	cout << "\nEnter The Duration Of The Program: ";
-	duration = Value();
+		ClearScr();
+		cout << "Enter The Name Of The Program: ";
+		name = inputString();
+		cout << "\nEnter The Type Of The Program: ";
+		type = inputString();
+		cout << "\nEnter The WeekDay Of The Program: ";
+		day = inputString();
+		cout << "\nEnter The Hour Of Exhibition: ";
+		hour = Value();
+		cout << "\nEnter The Minutes Of Exhibition: ";
+		minute = Value();
+		cout << "\nEnter The Duration Of The Program: ";
+		duration = Value();
 
 	} while (name == "" && duration == 0 && !checkValidWeekDay(day) && !checkValidProgramType(type));
 
@@ -271,7 +286,7 @@ bool Box::createdProgram(int i)
 		p->setBelongsToChannel(channels[i]->getName());
 		channels[i]->addProgram(p);
 	}
-	
+
 
 }
 
@@ -288,25 +303,25 @@ bool Box::removeProgram(int i)
 
 }
 
-bool Box::updateProgram(char op)
+bool Box::updateProgram(char op, int i)
 {
 }
 
 // Movie CRUD
 bool Box::createdMovie()
 {
-	
+
 	string name = "";
 	int cost = 0, hour =0 , minute = 0;
 	string day , type; 
 	do{
-	ClearScr();
-	cout << "Enter The Name Of The Movie: ";
-	name = inputString();
-	cout << "Enter The Hour Of Exhibition: ";
-	cost = Value();
-	cout << "Enter Cost: ";
-	minute = Value();
+		ClearScr();
+		cout << "Enter The Name Of The Movie: ";
+		name = inputString();
+		cout << "Enter The Hour Of Exhibition: ";
+		cost = Value();
+		cout << "Enter Cost: ";
+		minute = Value();
 	} while (name == "" && cost == 0);
 
 
@@ -317,7 +332,7 @@ bool Box::removeMovie(int i)
 	movies.erase(movies.begin() + i);
 }
 
-bool Box::updateMovie(char op)
+bool Box::updateMovie(char op , int i)
 {
 }
 
@@ -334,10 +349,10 @@ void Box::PrintProgramsByDay(int i , WeekDay day){
 		cout << "YES";
 	else
 	{
-	cout << "NO";
-	cout <<"\nTo Be Recorded: ";
-	if (recordList[i]->getToBeRecorded())
-		cout << "YES"; else cout << "NO";
+		cout << "NO";
+		cout <<"\nTo Be Recorded: ";
+		if (recordList[i]->getToBeRecorded())
+			cout << "YES"; else cout << "NO";
 	}
 	cout << "\n\nUse The Arrows To Move Across The Programs List\n\n1- Set To Be Recorded\n\n0- Quit" << endl; 
 	cout << " " << string(78, '-') << endl; 
@@ -356,10 +371,10 @@ void Box::PrintProgramsByChannel(int i ,string channel ,WeekDay day){
 		cout << "YES"; 
 	else
 	{
-	cout << "NO";
-	cout <<"\nTo Be Recorded: ";
-	if (recordList[i]->getToBeRecorded())
-		cout << "YES"; else cout << "NO";
+		cout << "NO";
+		cout <<"\nTo Be Recorded: ";
+		if (recordList[i]->getToBeRecorded())
+			cout << "YES"; else cout << "NO";
 	}
 	cout << "\n\nUse The Arrows To Move Across The Programs List\n\n1- Buy\n\n0- Quit" << endl; 
 	cout << " " << string(78, '-') << endl; 
@@ -378,10 +393,10 @@ void Box::PrintProgramsByType(int i , ProgramType type, WeekDay day){
 		cout << "YES"; 
 	else
 	{
-	cout << "NO";
-	cout <<"\nTo Be Recorded: ";
-	if (recordList[i]->getToBeRecorded())
-		cout << "YES"; else cout << "NO";
+		cout << "NO";
+		cout <<"\nTo Be Recorded: ";
+		if (recordList[i]->getToBeRecorded())
+			cout << "YES"; else cout << "NO";
 	}
 	cout << "\nUse The Arrows To Move Across The Programs List\n\n1- Set To Be Recorded\n\n0- Quit" << endl; 
 	cout << " " << string(78, '-') << endl; 
@@ -425,10 +440,10 @@ void Box::PrintAllPrograms(int i){
 		cout << "YES"; 
 	else
 	{
-	cout << "NO";
-	cout <<"\n To Be Recorded: ";
-	if (recordList[i]->getToBeRecorded())
-		cout << "YES"; else cout << "NO";
+		cout << "NO";
+		cout <<"\n To Be Recorded: ";
+		if (recordList[i]->getToBeRecorded())
+			cout << "YES"; else cout << "NO";
 	}
 	cout << "\n\nUse The Arrows To Move Across The Programs List\n\n1- Change Name\n2- Change Duration\n3- Change Program Type\n4- Change Day Of The Week\n5- Change Airing Time\n6- Delete Program\n\n0- Quit" << endl; 
 	cout << " " << string(78, '-') << endl; 
@@ -447,5 +462,17 @@ void Box::PrintAllChannels(int i)
 	}
 	cout << "\n\nUse The Arrows To Move Across The Channel List\n\n1- Change Name\n2- Add New Program\n3- Remove A Program\n\n0- Quit" << endl; 
 	cout << " " << string(78, '-') << endl; 
+
+}
+
+bool Box::checkNewChannelName(string name)
+{
+	for (int i = 0 ; i< channels.size() ; i++)
+	{
+		if (channels[i]->getName() == name)
+			return false;
+	}
+
+	return true;
 
 }
