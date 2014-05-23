@@ -19,5 +19,5 @@ public:
 	~Channel(void);
 	vector <Program*> getPrograms() const;
 	string getName() const;
-
+	bool CheckIfValidTimeForNewProgram(Program* p);
 };

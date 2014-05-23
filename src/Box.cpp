@@ -8,6 +8,7 @@ Box::Box(void)
 	recordList.clear();
 	movies.clear();
 	channels.clear();
+	adminLogin=false;
 }
 
 
@@ -18,9 +19,24 @@ Box::~Box(void)
 
 Box::Box(string passwd, Date Date)
 {
+	viewedMovies.clear();
+	recordList.clear();
+	movies.clear();
+	channels.clear();
 	ownerPass=passwd;
 	this->currentDate=currentDate;
+	adminLogin = false;
 
+}
+
+bool Box::getAdminLogin() const{
+
+	return adminLogin;
+}
+
+void Box::setAdminLogin(bool login){
+
+	adminLogin = login;
 }
 
 vector<Program*> Box::listByDay(WeekDay day) const
@@ -193,28 +209,83 @@ string Box::getPassword() const
 	return ownerPass;
 }
 
-/*
 // Channel CRUD
 bool Box::createdChanel()
 {
-	return true;
+	
+	string name = "";
+	do{
+	ClearScr();
+	cout << "Enter The Name Of The Channel: ";
+	name = inputString();
+
+	} while (name == "");
+	
+	Channel* c1 = new Channel(name);
+
+	channels.push_back(c1);
+
+ 	return true;
 }
 
-bool Box::removeChanel()
+bool Box::removeChanel(int i)
 {
+	channels.erase(channels.begin() + i);
+
+	return true;
 }
 
 bool Box::updateChanel()
 {
+
 }
 
 // Program CRUD
-bool Box::createdProgram(string chanel)
+bool Box::createdProgram(int i)
 {
+	string name = "";
+	int duration = 0, hour =0 , minute = 0;
+	string day , type; 
+	do{
+	ClearScr();
+	cout << "Enter The Name Of The Program: ";
+	name = inputString();
+	cout << "Enter The Type Of The Program: ";
+	type = inputString();
+	cout << "Enter The WeekDay Of The Program: ";
+	day = inputString();
+	cout << "Enter The Hour Of Exhibition: ";
+	hour = Value();
+	cout << "Enter The Minutes Of Exhibition: ";
+	minute = Value();
+	cout << "\nEnter The Duration Of The Program: ";
+	duration = Value();
+
+	} while (name == "" && duration == 0 && !checkValidWeekDay(day) && !checkValidProgramType(type));
+
+
+	Program* p = new Program(name,convertStringToProgramType(type),duration, Date(convertStringToWeekDay(day), hour, minute));
+
+	if(channels[i]->CheckIfValidTimeForNewProgram(p))
+	{
+		p->setBelongsToChannel(channels[i]->getName());
+		channels[i]->addProgram(p);
+	}
+	
+
 }
 
-bool Box::removeProgram()
+bool Box::removeProgram(int i)
 {
+	string programName = recordList[i]->getName();
+
+	for (unsigned int j = 0 ; j < channels.size() ; j++)
+	{
+		channels[j]->removeProgram(programName);
+	}
+
+	recordList.erase(recordList.begin() + i);
+
 }
 
 bool Box::updateProgram()
@@ -234,28 +305,132 @@ bool Box::updateMovie()
 {
 }
 
-*/
+
 void Box::PrintProgramsByDay(int i , WeekDay day){ 
 
 	ClearScr(); 
 	vector <Program *> programsOnThatDay = listByDay(day);
 
-	if (programsOnThatDay.empty()) 
-	{ 
-		cout << "There are no programs on " << convertWeekDayToString(day); 
-		Sleep(800); 
-	} 
-	else { 
-		cout << "                         -------- Programs --------" << endl;
-		cout << "on: " << convertWeekDayToString(day) << ": " << endl; 
-		cout << "\nName: " << programsOnThatDay[i]->getName() <<"\n Duration: "<< programsOnThatDay[i]->getDuration() <<"\nProgram Type: " << convertProgramTypeToString(programsOnThatDay[i]->getProgramType()) <<"\nDate: " << programsOnThatDay[i]->getDate().PrintDate();
-		cout << "\nRecord: ";
-		if (programsOnThatDay[i]->getRecorded())
-			cout << "YES"; else cout << "NO";
-		cout <<"\n To Be Recorded: ";
-		if (programsOnThatDay[i]->getToBeRecorded())
-			cout << "YES"; else cout << "NO";
-		cout << "\n\nUse the arrows to move across the Piece List\n\n1- Buy\n2- Quit" << endl; 
-		cout << " " << string(78, '-') << endl; 
-	} 
+
+	cout << "                         -------- Programs --------" << endl;
+	cout << "\nName: " << programsOnThatDay[i]->getName() <<"\nChannel: " << programsOnThatDay[i]->getBelongsToChannel() << "\nDuration: "<< programsOnThatDay[i]->getDuration() <<"\nProgram Type: " << convertProgramTypeToString(programsOnThatDay[i]->getProgramType()) <<"\nDate: " << programsOnThatDay[i]->getDate().PrintDate();
+	cout << "\nRecord: ";
+	if (programsOnThatDay[i]->getRecorded())
+		cout << "YES";
+	else
+	{
+	cout << "NO";
+	cout <<"\nTo Be Recorded: ";
+	if (recordList[i]->getToBeRecorded())
+		cout << "YES"; else cout << "NO";
+	}
+	cout << "\n\nUse the arrows to move across the Piece List\n\n1- Set To Be Recorded\n\n0- Quit" << endl; 
+	cout << " " << string(78, '-') << endl; 
+
 } 
+
+void Box::PrintProgramsByChannel(int i ,string channel ,WeekDay day){ 
+
+	ClearScr(); 
+	vector <Program *> programsOnThatDay = listByChannel(channel,day);
+
+	cout << "                         -------- Programs --------" << endl;
+	cout << "\nName: " << programsOnThatDay[i]->getName() <<"\nChannel: " << programsOnThatDay[i]->getBelongsToChannel() <<"\nDuration: "<< programsOnThatDay[i]->getDuration() <<"\nProgram Type: " << convertProgramTypeToString(programsOnThatDay[i]->getProgramType()) <<"\nDate: " << programsOnThatDay[i]->getDate().PrintDate();
+	cout << "\nRecord: ";
+	if (programsOnThatDay[i]->getRecorded())
+		cout << "YES"; 
+	else
+	{
+	cout << "NO";
+	cout <<"\nTo Be Recorded: ";
+	if (recordList[i]->getToBeRecorded())
+		cout << "YES"; else cout << "NO";
+	}
+	cout << "\n\nUse the arrows to move across the Piece List\n\n1- Buy\n\n0- Quit" << endl; 
+	cout << " " << string(78, '-') << endl; 
+
+} 
+
+void Box::PrintProgramsByType(int i , ProgramType type, WeekDay day){ 
+
+	ClearScr();
+	vector <Program *> programsOnThatDay = listByType(type, day);
+
+	cout << "                         -------- Programs --------" << endl;
+	cout << "\nName: " << programsOnThatDay[i]->getName() <<"\nChannel: " << programsOnThatDay[i]->getBelongsToChannel() <<"\nDuration: "<< programsOnThatDay[i]->getDuration() <<"\nProgram Type: " << convertProgramTypeToString(programsOnThatDay[i]->getProgramType()) <<"\nDate: " << programsOnThatDay[i]->getDate().PrintDate();
+	cout << "\nRecord: ";
+	if (programsOnThatDay[i]->getRecorded())
+		cout << "YES"; 
+	else
+	{
+	cout << "NO";
+	cout <<"\nTo Be Recorded: ";
+	if (recordList[i]->getToBeRecorded())
+		cout << "YES"; else cout << "NO";
+	}
+	cout << "\n\nUse the arrows to move across the Piece List\n\n1- Set To Be Recorded\n\n0- Quit" << endl; 
+	cout << " " << string(78, '-') << endl; 
+
+} 
+
+void Box::PrintMovies(int i){
+
+	vector <Movie* > allMovies = movies;
+
+	for (unsigned int j = 0 ; j < viewedMovies.size() ; j++)
+	{
+		allMovies.push_back(viewedMovies[j]);
+
+	}
+
+	ClearScr();
+
+
+	cout << "                         -------- Movies --------" << endl;
+	cout << "\nName: " << allMovies[i]->getName() <<"\nCost: "<< allMovies[i]->getCost();
+	if (allMovies[i]->getRentedTimes() == 0)
+		cout << "Unseen"; else { cout << "Times watched: " << allMovies[i]->getRentedTimes() << endl;}
+
+	if (!adminLogin)
+		cout << "\n\nUse the arrows to move across the Piece List\n\n1- Rent\n0- Quit" << endl; 
+	else
+		cout << "\n\nUse the arrows to move across the Piece List\n\n1- Rent\2-Change Movie Name\n3-Change Movie Cost\n0- Quit" << endl; 
+	cout << " " << string(78, '-') << endl; 
+
+} 
+
+void Box::PrintAllPrograms(int i){
+
+	ClearScr(); 
+
+	cout << "                         -------- Programs --------" << endl;
+	cout << "\nName: " << recordList[i]->getName() <<"\nChannel: " << recordList[i]->getBelongsToChannel() <<"\nDuration: "<< recordList[i]->getDuration() <<"\nProgram Type: " << convertProgramTypeToString(recordList[i]->getProgramType()) <<"\nDate: " << recordList[i]->getDate().PrintDate();
+	cout << "\nRecord: ";
+	if (recordList[i]->getRecorded())
+		cout << "YES"; 
+	else
+	{
+	cout << "NO";
+	cout <<"\n To Be Recorded: ";
+	if (recordList[i]->getToBeRecorded())
+		cout << "YES"; else cout << "NO";
+	}
+	cout << "\n\nUse the arrows to move across the Piece List\n\n1- Change Name\n2- Change Duration\n3- Change Program Type\n4- Change Day Of The Week\n5- Change Airing Time\n6- Delete Program\n\n0- Quit" << endl; 
+	cout << " " << string(78, '-') << endl; 
+
+}
+
+void Box::PrintAllChannels(int i)
+{
+	ClearScr(); 
+
+	cout << "                         -------- Channels --------" << endl;
+	cout << "\nName: " << channels[i]->getName() <<"\nNumber Of Programs: " << channels[i]->getPrograms().size()<< "\n\n";
+	for (unsigned int j = 0 ; j < channels[i]->getPrograms().size(); j++)
+	{
+		cout << j+1 << channels[i]->getPrograms()[j]->getName() << endl;
+	}
+	cout << "\n\nUse the arrows to move across the Piece List\n\n1- Change Name\n2- Add New Program\n3- Remove A Program\n\n0- Quit" << endl; 
+	cout << " " << string(78, '-') << endl; 
+
+}

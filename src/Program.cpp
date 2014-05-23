@@ -22,6 +22,14 @@ Program::Program(string name, ProgramType type, int duration, Date exhibitionDat
 }
 
 
+string Program::getBelongsToChannel() const{
+	return belongsToTheChannel;
+}
+void Program::setBelongsToChannel(string belongsToTheChannel){
+	this->belongsToTheChannel = belongsToTheChannel;
+}
+
+
 Date Program::getDate() const
 {
 	return exhibitionDate;

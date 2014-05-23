@@ -8,6 +8,14 @@ string convertToLowerCase (string Word){ //Function to do a case-insensitive sea
 	return Word;
 }
 
+string convertToUpperCase (string Word){ //Function to do a case-insensitive search
+	
+	for (unsigned int i = 0; i < Word.size(); i++){
+		Word[i] = toupper(Word[i]);
+	}
+	return Word;
+}
+
 void ClearScr()
 {
 	HANDLE                     hStdOut;
@@ -45,14 +53,13 @@ void ClearScr()
 	SetConsoleCursorPosition( hStdOut, homeCoords );
 }
 
-
 string inputString()
 {
 	string nomestring;
-	ClearScr();
+	//ClearScr();
 	ws(cin); //ignorar espaço antes de introduzir nome
 	getline(cin, nomestring);
-	if (nomestring.length() > 21)
+	if (nomestring.length() > 40)
 	{
 		ClearScr();
 		cout << "Please write only first and last name.";
@@ -135,6 +142,7 @@ string convertProgramTypeToString(ProgramType type)
 		return "COOKING";
 	else if (type == SPORTS)
 		return "SPORTS";
+	
 }
 
 WeekDay convertStringToWeekDay(string day)
@@ -153,6 +161,7 @@ WeekDay convertStringToWeekDay(string day)
 		return FRIDAY;
 	else if (day == "SATURDAY")
 		return SATURDAY;	
+
 }
 
 string convertWeekDayToString (WeekDay day)
@@ -171,6 +180,7 @@ string convertWeekDayToString (WeekDay day)
 		return "FRIDAY";
 	else if (day = SATURDAY)
 		return "SATURDAY";
+
 }
 
 string convertIntToString(int number)
@@ -178,4 +188,21 @@ string convertIntToString(int number)
    stringstream ss;
    ss << number;
    return ss.str();
+}
+
+bool checkValidWeekDay(string day)
+{
+	if ((convertToUpperCase(day) != "SUNDAY") && (convertToUpperCase(day) != "MONDAY") &&  (convertToUpperCase(day) != "TUESDAY") && (convertToUpperCase(day) != "WEDNESDAY") && (convertToUpperCase(day) != "THURSDAY") && (convertToUpperCase(day) != "FRIDAY") && (convertToUpperCase(day) != "SATURDAY"))
+		return false;
+	else
+		return true;
+}
+
+bool checkValidProgramType(string type)
+{
+
+	if ((convertToUpperCase(type) != "NEWS") && (convertToUpperCase(type) != "SPORTS") && (convertToUpperCase(type) != "COOKING") &&  (convertToUpperCase(type) != "ENTERTAINMENT") && (convertToUpperCase(type) != "LYFE_STYLE"))
+		return false;
+	else
+		return true;
 }

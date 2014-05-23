@@ -10,6 +10,7 @@
 #include <stdlib.h>    
 #include <time.h>      
 #include <conio.h>
+#include <algorithm>
 
 using namespace std;
 
@@ -28,11 +29,14 @@ int Value();
 void ClearScr();
 void hideCursor();
 string convertToLowerCase (string Word);
+string convertToUpperCase (string Word);
 vector <int> parsingInput(string line);
 WeekDay convertStringToWeekDay(string day);
 string convertWeekDayToString(WeekDay day);
 ProgramType convertStringToProgramType(string type);
 string convertProgramTypeToString(ProgramType type);
 string convertIntToString(int number);
+bool checkValidWeekDay(string day);
+bool checkValidProgramType(string type);
 
 

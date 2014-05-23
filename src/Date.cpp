@@ -29,3 +29,8 @@ string Date::PrintDate()
 
 	return output;
 }
+
+int Date::turnToMinutes()
+{
+	return (int)day * 24*60*60  + hour*60 + min;
+}
