@@ -37,3 +37,15 @@ double Movie::getCost()
 {
 	return cost;
 }
+
+
+
+	void Movie::setName(string name){
+		this->name = name;
+	}
+	void Movie::setCost(int cost){
+		this->cost = cost;
+	}
+	void Movie::setRentedTimes(int rentedTimes){
+		this->rentedTimes = rentedTimes;
+	}

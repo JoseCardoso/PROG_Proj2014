@@ -14,6 +14,9 @@ public:
 	Movie(string name, double cost);
 	~Movie(void);
 	string getName();
+	void setName(string name);
+	void setCost(int cost);
+	void setRentedTimes(int rentedTimes);
 	void incRented();
 	long getRentedTimes();
 	double getCost();

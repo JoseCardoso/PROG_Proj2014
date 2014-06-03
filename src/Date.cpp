@@ -34,3 +34,13 @@ int Date::turnToMinutes()
 {
 	return (int)day * 24*60*60  + hour*60 + min;
 }
+
+int Date::getMinutes()
+{
+	return min;
+}
+
+int Date::getHour()
+{
+	return hour;
+}

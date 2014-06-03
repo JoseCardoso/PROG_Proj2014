@@ -30,6 +30,11 @@ public:
 	vector<Program*> listByDay(WeekDay day) const;
 	vector<Program*> listByChannel(string  channel, WeekDay day) const;
 	vector<Program*> listByType(ProgramType  type, WeekDay day) const;
+	vector<Movie* > getMovies();
+	vector<Movie*> getViewedMovies();
+	vector<Program*> getRecordList();
+	vector<Channel*> getChannels();
+	vector<Movie*> getAllMovies();
 	bool rentMovies(string title);
 	float moneySpent() const;
 	int timesWhatched(string title) const;
@@ -41,20 +46,31 @@ public:
 	void PrintMovies(int i);
 	void PrintAllPrograms(int i);
 	void PrintAllChannels(int i);
+	Date getCurrentDate();
 	// Channel CRUD
-	bool createdChanel();
-	bool removeChanel(int i);
-	bool updateChanel(char op, int i);
+	void createdChanel();
+	void removeChanel(int i);
+	void updateChanel(char op, int i);
 	bool checkNewChannelName(string name);
 	// Program CRUD
-	bool createdProgram(int i); //i significa o indice do channel no vector de canais da Box
-	bool removeProgram(int i); //i significa o indice do programa no vector de programas para poder remove-lo dos respectivos canais
-	bool updateProgram(char op, int i);
+	void createdProgram(int i); //i significa o indice do channel no vector de canais da Box
+	void removeProgram(int i); //i significa o indice do programa no vector de programas para poder remove-lo dos respectivos canais
+	void updateProgram(char op, int i);// como acima
+	bool checkNewProgramName(string name);
 	// Movie CRUD
-	bool createdMovie();
-	bool removeMovie(int i);
-	bool updateMovie(char op, int i);
-
+	void createdMovie();
+	void removeMovie(int i);
+	void updateMovie(char op, int i);
+	bool checkNewMovieName(string name);
+	// Load and Save
+	void saveGeneralInfo();
+	void loadGeneralInfo();
+	void saveChannels();
+	void loadChannels();
+	void savePrograms();
+	void loadPrograms();
+	void saveMovies();
+	void loadMovies();
 };
 
 

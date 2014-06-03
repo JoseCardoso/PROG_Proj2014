@@ -72,13 +72,10 @@ string inputString()
 int Value()
 {
 
-	ClearScr();
 	int out;
 	string in;
 	while(true) {
 
-		cout << "Enter a valid value: ";
-		cin.ignore();
 		getline(cin,in);
 		stringstream ss(in); //covert input to a stream for conversion to int
 
@@ -166,19 +163,19 @@ WeekDay convertStringToWeekDay(string day)
 
 string convertWeekDayToString (WeekDay day)
 {
-	if (day = SUNDAY)
+	if (day == SUNDAY)
 		return "SUNDAY";
-	else if (day = MONDAY)
+	else if (day == MONDAY)
 		return "MONDAY";
-	else if (day = TUESDAY)
+	else if (day == TUESDAY)
 		return "TUESDAY";
-	else if (day = WEDNESDAY)
+	else if (day == WEDNESDAY)
 		return "WEDNESDAY";
-	else if (day = THURSDAY)
+	else if (day == THURSDAY)
 		return "THURSDAY";
-	else if (day = FRIDAY)
+	else if (day == FRIDAY)
 		return "FRIDAY";
-	else if (day = SATURDAY)
+	else if (day == SATURDAY)
 		return "SATURDAY";
 
 }

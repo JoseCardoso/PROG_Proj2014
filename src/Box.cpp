@@ -24,7 +24,7 @@ Box::Box(string passwd, Date Date)
 	movies.clear();
 	channels.clear();
 	ownerPass=passwd;
-	this->currentDate=currentDate;
+	this->currentDate=Date;
 	adminLogin = false;
 
 }
@@ -37,6 +37,11 @@ bool Box::getAdminLogin() const{
 void Box::setAdminLogin(bool login){
 
 	adminLogin = login;
+}
+
+Date Box::getCurrentDate()
+{
+	return currentDate;
 }
 
 vector<Program*> Box::listByDay(WeekDay day) const
@@ -174,10 +179,11 @@ int Box::timesWhatched(string title) const{
 
 bool Box::changePassword()// ask, verify and change the password
 {
+	ClearScr();
 	string input, previousPass = ownerPass;
 	cout <<"Please input previous password: ";
 
-	cin.ignore();
+
 	getline(cin, input);
 
 	if (input == ownerPass)
@@ -187,7 +193,6 @@ bool Box::changePassword()// ask, verify and change the password
 
 			cout << "\nPlease enter new password: ";
 
-			cin.ignore();
 			getline(cin,input);
 			ownerPass = input;
 
@@ -210,7 +215,7 @@ string Box::getPassword() const
 }
 
 // Channel CRUD
-bool Box::createdChanel()
+void Box::createdChanel()
 {
 
 	string name = "";
@@ -225,38 +230,63 @@ bool Box::createdChanel()
 
 	channels.push_back(c1);
 
-	return true;
+
 }
 
-bool Box::removeChanel(int i)
+void Box::removeChanel(int i)
 {
+	for (unsigned int j = 0 ; j< channels[i]->getPrograms().size() ; j++)
+	{
+		channels[i]->getPrograms()[j]->setBelongsToChannel("NONE");
+	}
+
 	channels.erase(channels.begin() + i);
 
-	return true;
 }
 
-bool Box::updateChanel(char op, int i) // i representa o id do canal no vector de canais
+void Box::updateChanel(char op, int i) // i representa o id do canal no vector de canais
 {
 	ClearScr();
+	string name;
 
 	switch (op)
 	{
 	case '1': //Change Name
 		cout << "Enter Name: (must be a new unused name): ";
-		if(checkNewChannelName(inputString()))
-			channels[i]->
-			break;
-	case '2'://AddNewProgram
+		name = inputString();
+		if(checkNewChannelName(name))
+			channels[i]->setName(name);
 		break;
-	case '3': //Remove a program
+	case '2':
+		createdProgram(i);
 		break;
+	case '3'://Remove a Program
+		int choice=0;
+		do {
+			ClearScr();
+			
+			cout << "Choose ID of the program you want to remove: \n\n";
+			for (unsigned int j = 0 ; j < channels[i]->getPrograms().size();j++)
+			{
+				cout << j+1 <<"- " << channels[i]->getPrograms()[j]->getName() << endl;
+			}
+			choice = Value();
+		}while( choice < 1 && choice > channels[i]->getPrograms().size() + 1);
 
+		if ( choice < 1 && choice > channels[i]->getPrograms().size() + 1)
+			cout << "\nCan't remove that program";
+		else{
+			string name = channels[i]->getPrograms()[choice-1]->getName();
+			channels[i]->getPrograms()[choice-1]->setBelongsToChannel("NONE");
+			channels[i]->removeProgram(name);
+
+		}
 	}
 
 }
 
 // Program CRUD
-bool Box::createdProgram(int i)
+void Box::createdProgram(int i)
 {
 	string name = "";
 	int duration = 0, hour =0 , minute = 0;
@@ -266,9 +296,9 @@ bool Box::createdProgram(int i)
 		cout << "Enter The Name Of The Program: ";
 		name = inputString();
 		cout << "\nEnter The Type Of The Program: ";
-		type = inputString();
+		type = convertToUpperCase(inputString());
 		cout << "\nEnter The WeekDay Of The Program: ";
-		day = inputString();
+		day = convertToUpperCase(inputString());
 		cout << "\nEnter The Hour Of Exhibition: ";
 		hour = Value();
 		cout << "\nEnter The Minutes Of Exhibition: ";
@@ -286,11 +316,27 @@ bool Box::createdProgram(int i)
 		p->setBelongsToChannel(channels[i]->getName());
 		channels[i]->addProgram(p);
 	}
+	else 
+	{
+		cout << "\nThere was a program in this schedule. Programs Overlaped." <<endl;
+		Sleep(2000);
+	}
+
+	if (p->getDate() < currentDate)
+	{
+		p->setRecorded(true);
+		p->setToBeRecorded(true);
+	}
+	else
+	{
+		p->setRecorded(false);
+		p->setToBeRecorded(false);
+	}
 
 
 }
 
-bool Box::removeProgram(int i)
+void Box::removeProgram(int i)
 {
 	string programName = recordList[i]->getName();
 
@@ -303,37 +349,116 @@ bool Box::removeProgram(int i)
 
 }
 
-bool Box::updateProgram(char op, int i)
+void Box::updateProgram(char op, int i)
 {
+	ClearScr();
+	string name="";
+	int time;
+
+	switch (op)
+	{
+	case '1': //Change Name
+		cout << "Enter Name: (must be a new unused name): ";
+		name = inputString();
+		if(checkNewProgramName(name))
+			recordList[i]->setName(name);
+		break;
+	case '2'://Change duration
+		cout << "Enter new duration: ";
+		time = Value();
+
+		for (unsigned int k = 0 ; k < channels.size() ; k++){
+
+			if (channels[k]->getName() == recordList[i]->getBelongsToChannel())
+			{
+				for (unsigned int j = 0 ;  j < channels[i]->getPrograms().size() ; j++)
+				{
+					if ( j < channels[k]->getPrograms().size() -1)
+						if (channels[k]->getPrograms()[j]->getName() == recordList[i]->getName())
+						{
+							if (channels[k]->getPrograms()[j+1]->getDate().turnToMinutes() > recordList[i]->getDate().turnToMinutes() + time)
+								recordList[i]->setDuration(time);
+						} 
+				}
+			}
+
+		}
+		break;
+
+	case '3'://Change Program Type
+		cout<< "Please enter the new Type (NEWS, SPORTS, ENTERTAINMENT, LIFE_STYLE, COOKING):" ;
+		name = convertToUpperCase(inputString());
+		if (checkValidProgramType(name))
+			recordList[i]->setProgramType(convertStringToProgramType(name));
+		else
+		{
+			cout <<"\nNot a valid type;";
+			Sleep(800);
+		}
+		break;
+	case '4'://Delete Program
+		removeProgram(i);
+		break;
+	}
 }
 
 // Movie CRUD
-bool Box::createdMovie()
+void Box::createdMovie()
 {
 
 	string name = "";
-	int cost = 0, hour =0 , minute = 0;
-	string day , type; 
+	int cost = 0; 
 	do{
 		ClearScr();
 		cout << "Enter The Name Of The Movie: ";
 		name = inputString();
-		cout << "Enter The Hour Of Exhibition: ";
-		cost = Value();
 		cout << "Enter Cost: ";
-		minute = Value();
+		cost = Value();
 	} while (name == "" && cost == 0);
+
+	Movie* m = new Movie(name , cost);
+	movies.push_back (m);
 
 
 }
 
-bool Box::removeMovie(int i)
+void Box::removeMovie(int i)
 {
 	movies.erase(movies.begin() + i);
 }
 
-bool Box::updateMovie(char op , int i)
+void Box::updateMovie(char op , int i)
 {
+
+	ClearScr();
+	string name="";
+	int cost;
+	vector <Movie * > temp;
+
+	for (unsigned int j = 0 ; j < movies.size() ; j++)
+	{
+		temp.push_back(movies[j]);
+	}
+	for (unsigned int j = 0 ; j < viewedMovies.size() ; j++)
+	{
+		temp.push_back(viewedMovies[j]);
+	}
+
+	switch (op)
+	{
+	case '2': //Change Name
+		cout << "Enter Name: (must be a new unused name): ";
+		name = inputString();
+		if(!checkNewMovieName(name))
+			temp[i]->setName(name);
+		break;
+	case '3':
+		cout << "Enter Cost: ";
+		cost = Value();
+		temp[i]->setCost(cost);
+		break;
+	}
+
 }
 
 void Box::PrintProgramsByDay(int i , WeekDay day){ 
@@ -376,7 +501,7 @@ void Box::PrintProgramsByChannel(int i ,string channel ,WeekDay day){
 		if (recordList[i]->getToBeRecorded())
 			cout << "YES"; else cout << "NO";
 	}
-	cout << "\n\nUse The Arrows To Move Across The Programs List\n\n1- Buy\n\n0- Quit" << endl; 
+	cout << "\n\nUse The Arrows To Move Across The Programs List\n\n1- Set To Be Recorded\n\n0- Quit" << endl; 
 	cout << " " << string(78, '-') << endl; 
 
 } 
@@ -419,12 +544,12 @@ void Box::PrintMovies(int i){
 	cout << "                         -------- Movies --------" << endl;
 	cout << "\nName: " << allMovies[i]->getName() <<"\nCost: "<< allMovies[i]->getCost();
 	if (allMovies[i]->getRentedTimes() == 0)
-		cout << "Unseen"; else { cout << "Times watched: " << allMovies[i]->getRentedTimes() << endl;}
+		cout << "\nUnseen"; else { cout << "\nTimes watched: " << allMovies[i]->getRentedTimes() << endl;}
 
 	if (!adminLogin)
-		cout << "\n\nUse The Arrows To Move Across The Movie Listt\n\n1- Rent\n0- Quit" << endl; 
+		cout << "\n\nUse The Arrows To Move Across The Movie List\n\n1- Rent\n0- Quit" << endl; 
 	else
-		cout << "\n\nUse the arrows to move across the Piece List\n\n1- Rent\2-Change Movie Name\n3-Change Movie Cost\n0- Quit" << endl; 
+		cout << "\n\nUse the Arrows To Move Across The Movie List\n\n1- Rent\n2- Change Movie Name\n3- Change Movie Cost\n4- Create New Movie\n5- Remove Movie\n0- Quit" << endl; 
 	cout << " " << string(78, '-') << endl; 
 
 } 
@@ -445,7 +570,7 @@ void Box::PrintAllPrograms(int i){
 		if (recordList[i]->getToBeRecorded())
 			cout << "YES"; else cout << "NO";
 	}
-	cout << "\n\nUse The Arrows To Move Across The Programs List\n\n1- Change Name\n2- Change Duration\n3- Change Program Type\n4- Change Day Of The Week\n5- Change Airing Time\n6- Delete Program\n\n0- Quit" << endl; 
+	cout << "\n\nUse The Arrows To Move Across The Programs List\n\n1- Change Name\n2- Change Duration\n3- Change Program Type\n4- Delete Program\n\n0- Quit" << endl; 
 	cout << " " << string(78, '-') << endl; 
 
 }
@@ -458,21 +583,291 @@ void Box::PrintAllChannels(int i)
 	cout << "\nName: " << channels[i]->getName() <<"\nNumber Of Programs: " << channels[i]->getPrograms().size()<< "\n\n";
 	for (unsigned int j = 0 ; j < channels[i]->getPrograms().size(); j++)
 	{
-		cout << j+1 << channels[i]->getPrograms()[j]->getName() << endl;
+		cout << j+1 <<"- " << channels[i]->getPrograms()[j]->getName() << endl;
 	}
-	cout << "\n\nUse The Arrows To Move Across The Channel List\n\n1- Change Name\n2- Add New Program\n3- Remove A Program\n\n0- Quit" << endl; 
+	cout << "\n\nUse The Arrows To Move Across The Channel List\n\n1- Change Name\n2- Add New Program\n3- Remove A Program\n4- Create New Channel\n5- Remove Channel\n\n0- Quit" << endl; 
 	cout << " " << string(78, '-') << endl; 
 
 }
 
 bool Box::checkNewChannelName(string name)
 {
-	for (int i = 0 ; i< channels.size() ; i++)
+	for (unsigned int i = 0 ; i< channels.size() ; i++)
 	{
 		if (channels[i]->getName() == name)
 			return false;
 	}
 
 	return true;
+
+}
+
+bool Box::checkNewProgramName(string name)
+{
+	for (unsigned int i = 0 ; i< recordList.size() ; i++)
+	{
+		if (recordList[i]->getName() == name)
+			return false;
+	}
+
+	return true;
+
+}
+
+bool Box::checkNewMovieName(string name)
+{
+	bool found = false;
+
+
+	for (unsigned int i = 0 ; i< movies.size() ; i++)
+	{
+		if (movies[i]->getName() == name)
+		{
+			found = true;
+			break;
+		}
+	}
+
+	if (!found)
+		for (unsigned int i = 0 ; i< viewedMovies.size() ; i++)
+		{
+			if (viewedMovies[i]->getName() == name)
+			{
+				found = true;
+				break;
+			}
+		}
+
+
+		return found;
+
+}
+
+vector<Movie* > Box::getMovies()
+{
+	return movies;
+}
+
+vector<Movie*> Box::getViewedMovies(){
+	return viewedMovies;
+}
+
+vector<Program*> Box::getRecordList(){
+	return recordList;
+}
+
+vector<Channel*> Box::getChannels(){
+	return channels;
+}
+
+vector <Movie *> Box:: getAllMovies()
+{
+	vector<Movie*> temp;
+
+	for (unsigned int i = 0 ; i < movies.size() ; i ++)
+	{
+		temp.push_back(movies[i]);
+	}
+	for (unsigned int i = 0 ; i < viewedMovies.size(); i++)
+	{
+		temp.push_back(viewedMovies[i]);
+	}
+
+	return temp;
+}
+
+void Box:: saveGeneralInfo() {
+	ofstream outputFile; 
+	outputFile.open("generalInfo.txt"); 
+	if (outputFile.fail()) 
+	{ 
+		outputFile.clear(); 
+	} 
+	else
+	{
+		//Password - number of channels- nMovies  - nViewedMovies - nPrograms
+
+		outputFile << ownerPass << " " << channels.size() << " " <<  movies.size() << " " << viewedMovies.size() << " " << recordList.size();
+
+	} 
+
+	outputFile.close(); 
+}
+void Box:: loadGeneralInfo()
+{
+	string password;
+	int nChanels, nMovies, nViewedMovies, nPrograms;
+
+	ifstream fin;
+	fin.open("generalInfo.txt");
+	if (!fin) {
+		return;
+	}
+
+	fin >> password >> nChanels >> nMovies >> nViewedMovies >> nPrograms;
+
+	ownerPass = password;
+
+}
+
+void Box:: saveChannels() {
+	ofstream outputFile; 
+	outputFile.open("ChannelsList.txt"); 
+	if (outputFile.fail()) 
+	{ 
+		outputFile.clear(); 
+	} 
+	else
+	{
+		outputFile << channels.size(); 
+		//Password - number of channels- nMovies  - nViewedMovies - nPrograms
+
+		for (unsigned int i = 0 ; i < channels.size(); i++){
+
+
+			outputFile << endl <<channels[i]->getName();
+		}
+	} 
+
+	outputFile.close(); 
+}
+
+void Box:: savePrograms() {
+	ofstream outputFile; 
+	outputFile.open("ProgramsList.txt"); 
+	if (outputFile.fail()) 
+	{ 
+		outputFile.clear(); 
+	} 
+	else
+	{
+		outputFile << recordList.size(); 
+
+		for (unsigned int i = 0 ; i < recordList.size(); i++){
+
+			outputFile << endl <<recordList[i]->getName() << " " << convertProgramTypeToString(recordList[i]->getProgramType()) << " " << recordList[i]->getBelongsToChannel() << " " << recordList[i]->getRecorded() << " " << recordList[i]->getToBeRecorded() << " " << recordList[i]->getDuration() << " " <<convertWeekDayToString(recordList[i]->getDate().getDay()) << " " << recordList[i]->getDate().getHour() << " " << recordList[i]->getDate().getMinutes();
+		}
+	} 
+
+	outputFile.close(); 
+}
+
+void Box:: saveMovies() {
+	ofstream outputFile; 
+	outputFile.open("MovieList.txt"); 
+	if (outputFile.fail()) 
+	{ 
+		outputFile.clear(); 
+	} 
+	else
+	{
+		outputFile << movies.size() + viewedMovies.size(); 
+
+		for (unsigned int i = 0 ; i < movies.size(); i++){
+
+			outputFile << endl <<movies[i]->getName() << " " << movies[i]->getCost() << " " << movies[i]->getRentedTimes();
+		} 
+
+		for (unsigned int i = 0 ; i < viewedMovies.size(); i++){
+
+			outputFile << endl <<viewedMovies[i]->getName() << " " << viewedMovies[i]->getCost() << " " << viewedMovies[i]->getRentedTimes();
+		} 
+		outputFile.close(); 
+	}
+}
+
+void Box::loadChannels()
+{
+	ifstream fin;
+	fin.open("ChannelsList.txt");
+	if (!fin)
+		cout << "ERROR";
+
+	int n;
+	fin >> n;
+
+
+	for (int i = 0; i < n; i++) {
+		string temp;
+		fin >> temp;
+
+		Channel* c = new Channel(temp);
+		channels.push_back(c);
+	}
+
+
+}
+
+void Box::loadPrograms()
+{
+	ifstream fin;
+	fin.open("ProgramsList.txt");
+	if (!fin)
+		cout << "ERROR";
+
+	string nome, tipo , canal , weekday;
+	bool recorded, toberecord;
+	int duration, hour , minutes;
+
+	int n;
+	fin >> n;
+
+
+	for (int i = 0; i < n; i++) {
+
+		fin >> nome >> tipo >> canal >> recorded >> toberecord >> duration >> weekday >> hour >> minutes;
+
+		Program* p = new Program(nome, convertStringToProgramType(convertToUpperCase(tipo)), duration, Date(convertStringToWeekDay(convertToUpperCase(weekday)),hour, minutes));
+
+
+		if (p->getDate() < currentDate){
+			p->setRecorded(true);
+			p->setToBeRecorded(true);
+		}
+		else
+		{			
+			p->setRecorded(false);
+			if (toberecord)
+				p->setToBeRecorded(true);
+			else
+				p->setToBeRecorded(false);
+		}
+
+		p->setBelongsToChannel(canal);
+		recordList.push_back(p);
+
+		for (unsigned int i = 0 ; i < channels.size() ; i++)
+		{
+			if (canal == channels[i]->getName())
+			{
+				channels[i]->addProgram(p);
+			}
+		}
+	}
+}
+
+void Box::loadMovies()
+{
+	ifstream fin;
+	fin.open("MovieList.txt");
+	if (!fin)
+		cout << "ERROR";
+
+	string nome;
+	int cost, rentedTimes;
+
+	int n;
+	fin >> n;
+
+	for (int i = 0; i < n; i++) {
+
+		fin >> nome >> cost >> rentedTimes;
+		Movie * m = new Movie(nome, cost);
+		m->setRentedTimes(rentedTimes);
+		if(rentedTimes >0)
+			viewedMovies.push_back(m);
+		else
+			movies.push_back(m);
+	}
 
 }

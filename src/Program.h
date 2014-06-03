@@ -22,6 +22,9 @@ public:
 	string getBelongsToChannel() const;
 	void setBelongsToChannel(string belongsToTheChannel);
 	string getName() const;
+	void setName(string name);
+	void setDuration(int i);
+	void setProgramType(ProgramType type);
 	Date getDate() const;
 	bool getRecorded() const;
 	bool getToBeRecorded() const;

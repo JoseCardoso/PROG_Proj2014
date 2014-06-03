@@ -29,7 +29,20 @@ void Program::setBelongsToChannel(string belongsToTheChannel){
 	this->belongsToTheChannel = belongsToTheChannel;
 }
 
+void Program:: setName(string name)
+{
+	this->name = name;
+}
 
+void Program:: setDuration(int i )
+{
+	this->duration = i;
+}
+
+void Program:: setProgramType(ProgramType type)
+{
+	this->type = type;
+}
 Date Program::getDate() const
 {
 	return exhibitionDate;
@@ -57,7 +70,7 @@ bool Program::getRecorded() const
 
 void Program::setRecorded(bool recorded)
 {
-	recorded = this->recorded;
+	this->recorded = recorded;
 }
 
 bool Program:: getToBeRecorded() const{
