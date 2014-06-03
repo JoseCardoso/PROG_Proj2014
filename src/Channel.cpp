@@ -51,6 +51,8 @@ void Channel:: removeProgram(string programName)
 
 bool Channel:: CheckIfValidTimeForNewProgram(Program* p)
 {
+	if (programs.size() == 0)
+		return true;
 	for( unsigned int i = 0 ; i < programs.size(); i ++)
 	{ 
 		
@@ -58,7 +60,7 @@ bool Channel:: CheckIfValidTimeForNewProgram(Program* p)
 				return true;
 			else
 				return false;
-	
+		
 	}
 	
 }

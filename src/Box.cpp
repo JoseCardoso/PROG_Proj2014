@@ -333,6 +333,7 @@ void Box::createdProgram(int i)
 		p->setToBeRecorded(false);
 	}
 
+	recordList.push_back(p);
 
 }
 
@@ -585,7 +586,7 @@ void Box::PrintAllChannels(int i)
 	{
 		cout << j+1 <<"- " << channels[i]->getPrograms()[j]->getName() << endl;
 	}
-	cout << "\n\nUse The Arrows To Move Across The Channel List\n\n1- Change Name\n2- Add New Program\n3- Remove A Program\n4- Create New Channel\n5- Remove Channel\n\n0- Quit" << endl; 
+	cout << "\n\nUse The Arrows To Move Across The Channel List\n\n1- Change Name\n2- Add New Program To Channel\n3- Remove A Program From Channel\n4- Create New Channel\n5- Remove Channel\n\n0- Quit" << endl; 
 	cout << " " << string(78, '-') << endl; 
 
 }
